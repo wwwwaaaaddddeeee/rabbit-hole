@@ -36,7 +36,7 @@ export async function fetchBookmarks(
 
   const res = await fetch(url.toString(), {
     headers: { Authorization: `Bearer ${token}` },
-    next: { revalidate: 120 },
+    next: { revalidate: 15 },
   });
 
   if (!res.ok) {

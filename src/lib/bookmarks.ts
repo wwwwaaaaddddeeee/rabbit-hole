@@ -5,7 +5,7 @@ import type { Bookmark } from "./types";
 
 let cachedBookmarks: Bookmark[] | null = null;
 let cacheTimestamp = 0;
-const CACHE_TTL = 120_000;
+const CACHE_TTL = 15_000;
 
 function hasValidEnv(): boolean {
   const token = process.env.RAINDROP_TOKEN;
