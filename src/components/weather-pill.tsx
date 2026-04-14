@@ -111,7 +111,7 @@ export function HeaderPills() {
 
   if (!location) return null;
 
-  const pillBase = "px-2 py-0.5 rounded-full text-[11px] font-medium whitespace-nowrap shrink-0";
+  const pillBase = "px-2 py-0.5 rounded-full text-[11px] font-medium whitespace-nowrap shrink-0 shadow-[0px_4px_12px_0px_rgba(0,0,0,0.15)]";
 
   return (
     <div className="flex items-center gap-2 flex-wrap justify-end">
