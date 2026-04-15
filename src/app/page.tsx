@@ -29,9 +29,6 @@ export default async function Home() {
             />
             rabit.wtf
           </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
-            things found on the internet
-          </p>
           <ProjectAttribution />
         </header>
 
