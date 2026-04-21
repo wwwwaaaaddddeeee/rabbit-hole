@@ -4,81 +4,46 @@ import { Card } from "@heroui/react";
 import type { Bookmark } from "@/lib/types";
 import { formatDate } from "@/lib/time";
 
-export function BookmarkCard({
-  bookmark,
-  onTagClick,
-}: {
-  bookmark: Bookmark;
-  onTagClick: (tag: string) => void;
-}) {
+export function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
   return (
-    <Card as="article" variant="default" className="overflow-hidden">
+    <Card
+      as="article"
+      variant="transparent"
+      className="border-b border-zinc-100 dark:border-zinc-800/60 last:border-b-0"
+    >
       <a
         href={bookmark.link}
         target="_blank"
         rel="noopener noreferrer"
-        className="block transition-colors duration-150 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-zinc-400 dark:focus-visible:ring-offset-zinc-950"
+        className="flex items-start gap-3 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-zinc-400 dark:focus-visible:ring-offset-zinc-950 rounded-md"
       >
-        <Card.Header className="flex items-center gap-2.5 pb-2">
-          <span className="text-[12px] font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-            {bookmark.domain}
-          </span>
-          <span
-            className="text-zinc-400 dark:text-zinc-600 text-[10px]"
-            aria-hidden="true"
-          >
-            &middot;
-          </span>
-          <span className="text-[12px] text-zinc-500 dark:text-zinc-400">
-            {formatDate(bookmark.created)}
-          </span>
-        </Card.Header>
-
-        <Card.Content className="space-y-4">
-          {bookmark.excerpt && (
-            <Card.Description className="text-[14px] text-zinc-600 dark:text-zinc-300 leading-relaxed line-clamp-3">
-              {bookmark.excerpt}
-            </Card.Description>
+        <div className="shrink-0 w-12 h-12 rounded-md overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+          {bookmark.cover && (
+            <img
+              src={bookmark.cover}
+              alt=""
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
           )}
+        </div>
 
-          <div className="flex gap-3.5 items-start rounded-xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30 p-3">
-            {bookmark.cover && (
-              <div className="shrink-0 w-16 h-20 rounded-lg overflow-hidden bg-zinc-200 dark:bg-zinc-700">
-                <img
-                  src={bookmark.cover}
-                  alt=""
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-            )}
-            <div className="flex-1 min-w-0 py-0.5">
-              <Card.Title className="text-[15px] font-semibold leading-snug text-zinc-900 dark:text-zinc-100 line-clamp-2">
-                {bookmark.title}
-              </Card.Title>
-            </div>
-          </div>
+        <Card.Content className="min-w-0 flex-1 py-0.5">
+          <Card.Title className="text-[15px] font-semibold leading-snug text-zinc-900 dark:text-zinc-100 line-clamp-2">
+            {bookmark.title}
+          </Card.Title>
+          <p className="mt-1 text-[13px] text-zinc-500 dark:text-zinc-400">
+            <span>{bookmark.domain}</span>
+            <span
+              className="mx-1.5 text-zinc-400 dark:text-zinc-600"
+              aria-hidden="true"
+            >
+              &middot;
+            </span>
+            <span>{formatDate(bookmark.created)}</span>
+          </p>
         </Card.Content>
       </a>
-
-      {bookmark.aiTags.length > 0 && (
-        <Card.Footer className="flex flex-wrap gap-1.5 pt-3">
-          {bookmark.aiTags.map((tag) => (
-            <button
-              key={tag}
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                onTagClick(tag);
-              }}
-              aria-label={`Show bookmarks tagged ${tag}`}
-              className="text-[11px] px-2.5 py-1 rounded-full border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 hover:border-zinc-400 dark:hover:border-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-zinc-400 dark:focus-visible:ring-offset-zinc-950 transition-colors duration-150 cursor-pointer"
-            >
-              {tag}
-            </button>
-          ))}
-        </Card.Footer>
-      )}
     </Card>
   );
 }
