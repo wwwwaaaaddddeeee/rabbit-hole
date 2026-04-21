@@ -1,12 +1,16 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import type { Bookmark } from "@/lib/types";
 import { BookmarkCard } from "./bookmark-row";
 import { TagFilter } from "./tag-filter";
+import { Pagination } from "./pagination";
+
+const PAGE_SIZE = 10;
 
 export function Feed({ bookmarks }: { bookmarks: Bookmark[] }) {
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
 
   const tagCounts = useMemo(() => {
     const counts = new Map<string, number>();
@@ -25,6 +29,28 @@ export function Feed({ bookmarks }: { bookmarks: Bookmark[] }) {
     return bookmarks.filter((b) => b.aiTags.includes(activeTag));
   }, [bookmarks, activeTag]);
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+
+  useEffect(() => {
+    setPage(1);
+  }, [activeTag]);
+
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [page, totalPages]);
+
+  const paged = useMemo(
+    () => filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+    [filtered, page]
+  );
+
+  const handlePageChange = (next: number) => {
+    setPage(next);
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
     <>
       <TagFilter
@@ -34,13 +60,21 @@ export function Feed({ bookmarks }: { bookmarks: Bookmark[] }) {
       />
 
       <div className="space-y-4">
-        {filtered.map((bookmark) => (
+        {paged.map((bookmark) => (
           <BookmarkCard
             key={bookmark.id}
             bookmark={bookmark}
             onTagClick={setActiveTag}
           />
         ))}
+
+        {filtered.length > PAGE_SIZE && (
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        )}
 
         {filtered.length === 0 && (
           <div className="py-20 text-center">

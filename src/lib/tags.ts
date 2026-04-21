@@ -1,6 +1,5 @@
-import { generateText, Output } from "ai";
+import { generateText } from "ai";
 import { mistral } from "@ai-sdk/mistral";
-import { z } from "zod";
 import type { Bookmark } from "./types";
 
 const tagCache = new Map<string, string[]>();
@@ -20,16 +19,7 @@ async function generateTags(
   try {
     const result = await generateText({
       model: mistral("mistral-small-latest"),
-      output: Output.object({
-        schema: z.object({
-          tags: z
-            .array(z.string())
-            .min(3)
-            .max(7)
-            .describe("3-7 short lowercase tags for this bookmark"),
-        }),
-      }),
-      prompt: `Generate 3-7 short, lowercase tags for this bookmark. Tags should capture the topic, domain, and type of content. Be specific and useful for filtering.
+      prompt: `Generate 3-7 short, lowercase tags for this bookmark. Respond with ONLY a JSON array of strings, nothing else.
 
 Title: ${b.title}
 URL: ${b.link}
@@ -37,15 +27,22 @@ Domain: ${b.domain}
 Excerpt: ${b.excerpt || "none"}
 Existing tags: ${b.raindropTags.length > 0 ? b.raindropTags.join(", ") : "none"}
 
-Return only the tags array. Keep tags short (1-3 words each), lowercase, no hashtags.`,
+Keep tags short (1-3 words each), lowercase, no hashtags. Example: ["design","react","tutorial"]`,
     });
 
-    const tags = result.output?.tags;
-    if (!tags || tags.length === 0) {
+    const text = result.text.trim();
+    const match = text.match(/\[[\s\S]*\]/);
+    if (!match) {
       return b.raindropTags.length > 0 ? b.raindropTags : [];
     }
-
-    return tags.map((t) => t.toLowerCase().trim()).slice(0, 7);
+    const parsed = JSON.parse(match[0]);
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      return b.raindropTags.length > 0 ? b.raindropTags : [];
+    }
+    return parsed
+      .filter((t): t is string => typeof t === "string")
+      .map((t) => t.toLowerCase().trim())
+      .slice(0, 7);
   } catch (error) {
     console.error(`Failed to generate tags for bookmark ${b.id}:`, error);
     return b.raindropTags.length > 0 ? b.raindropTags : [];
@@ -55,21 +52,17 @@ Return only the tags array. Keep tags short (1-3 words each), lowercase, no hash
 export async function enrichWithTags(
   bookmarks: Omit<Bookmark, "aiTags">[]
 ): Promise<Bookmark[]> {
-  const results: Bookmark[] = [];
-
-  for (const bookmark of bookmarks) {
-    const key = contentHash(bookmark);
-    let tags = tagCache.get(key);
-
-    if (!tags) {
-      tags = await generateTags(bookmark);
-      tagCache.set(key, tags);
-    }
-
-    results.push({ ...bookmark, aiTags: tags });
-  }
-
-  return results;
+  return Promise.all(
+    bookmarks.map(async (bookmark) => {
+      const key = contentHash(bookmark);
+      let tags = tagCache.get(key);
+      if (!tags) {
+        tags = await generateTags(bookmark);
+        tagCache.set(key, tags);
+      }
+      return { ...bookmark, aiTags: tags };
+    })
+  );
 }
 
 export function getAllCachedTags(): Map<string, number> {
