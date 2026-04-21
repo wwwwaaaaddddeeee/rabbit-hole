@@ -3,7 +3,6 @@
 import { useState, useMemo, useEffect } from "react";
 import type { Bookmark } from "@/lib/types";
 import { BookmarkCard } from "./bookmark-row";
-import { TagFilter } from "./tag-filter";
 import { Pagination } from "./pagination";
 
 const PAGE_SIZE = 10;
@@ -11,18 +10,6 @@ const PAGE_SIZE = 10;
 export function Feed({ bookmarks }: { bookmarks: Bookmark[] }) {
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [page, setPage] = useState(1);
-
-  const tagCounts = useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const b of bookmarks) {
-      for (const t of b.aiTags) {
-        counts.set(t, (counts.get(t) || 0) + 1);
-      }
-    }
-    return Array.from(counts.entries())
-      .map(([tag, count]) => ({ tag, count }))
-      .sort((a, b) => b.count - a.count);
-  }, [bookmarks]);
 
   const filtered = useMemo(() => {
     if (!activeTag) return bookmarks;
@@ -53,12 +40,6 @@ export function Feed({ bookmarks }: { bookmarks: Bookmark[] }) {
 
   return (
     <>
-      <TagFilter
-        tags={tagCounts}
-        activeTag={activeTag}
-        onTagSelect={setActiveTag}
-      />
-
       <div className="space-y-4">
         {paged.map((bookmark) => (
           <BookmarkCard

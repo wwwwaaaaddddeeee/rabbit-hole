@@ -13,6 +13,7 @@
   "dependencies": {
     "@ai-sdk/mistral": "^3.0.30",
     "@ai-sdk/react": "^3.0.160",
+    "@heroui/react": "^3.0.3",
     "agentation": "^3.0.2",
     "ai": "^6.0.158",
     "class-variance-authority": "^0.7.1",

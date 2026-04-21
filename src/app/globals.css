@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@heroui/styles/css";
 
 /* Match UA scrollbars / form controls to page theme (see layout `scheme-light` / `dark:scheme-dark`). */
 @layer base {
