@@ -57,6 +57,18 @@ a[href] {
   }
 }
 
+:root {
+  --coming-bg: #F0F0F0;
+  --coming-fg: #404040;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --coming-bg: #0F0F0F;
+    --coming-fg: #BFBFBF;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

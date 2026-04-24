@@ -4,14 +4,17 @@ export const metadata = {
 
 export default function ComingSoon() {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-[#F0F0F0]">
+    <div
+      className="fixed inset-0 flex flex-col items-center justify-center gap-6"
+      style={{ backgroundColor: "var(--coming-bg)", color: "var(--coming-fg)" }}
+    >
       <svg
         width="140"
         height="140"
         viewBox="0 0 35 35"
         fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
-        className="text-[#404040]"
+        style={{ color: "var(--coming-fg)" }}
         role="img"
         aria-label="rabit.wtf"
       >
@@ -24,6 +27,15 @@ export default function ComingSoon() {
         <path d="M23.5771 27.4098C23.7398 27.4454 23.7153 27.4129 23.787 27.5205C23.7959 28.1881 23.8942 32.7544 23.7256 32.9642C23.6275 32.9778 23.5694 32.9851 23.4706 32.9876C23.4268 32.5992 23.5136 31.6211 23.516 31.1694C23.5223 30.4156 23.5238 29.6617 23.5205 28.9078C23.5159 28.5884 23.4286 27.643 23.5771 27.4098Z" />
         <path d="M31.9841 30.1918C32.0522 30.2082 32.1408 30.2126 32.1476 30.262C32.2414 30.9397 32.1946 32.3645 32.1923 32.9807C31.5881 32.9913 26.7625 33.0378 26.6121 32.932C26.5781 32.7503 26.5901 32.6524 26.6012 32.4673C26.6313 32.6089 26.6464 32.7656 26.7407 32.8698C27.5955 32.8578 28.4749 32.8584 29.3297 32.8696C30.079 32.8795 31.0907 32.9691 31.8242 32.8439C31.9958 32.6506 31.8893 30.7245 31.8881 30.3698C31.9275 30.2968 31.9594 30.2375 31.9841 30.1918Z" />
       </svg>
+      <p className="font-sans text-xs sm:text-sm tracking-tight">
+        things found on the internet by{" "}
+        <a
+          href="https://wa-de.org"
+          className="underline underline-offset-2 hover:opacity-80"
+        >
+          wade
+        </a>
+      </p>
     </div>
   );
 }
