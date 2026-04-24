@@ -5,7 +5,7 @@ import type { Bookmark } from "@/lib/types";
 import { BookmarkCard } from "./bookmark-row";
 import { Pagination } from "./pagination";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 24;
 
 export function Feed({ bookmarks }: { bookmarks: Bookmark[] }) {
   const [page, setPage] = useState(1);
@@ -41,9 +41,11 @@ export function Feed({ bookmarks }: { bookmarks: Bookmark[] }) {
 
   return (
     <div>
-      {paged.map((bookmark) => (
-        <BookmarkCard key={bookmark.id} bookmark={bookmark} />
-      ))}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-5 sm:gap-x-6 gap-y-10 sm:gap-y-12">
+        {paged.map((bookmark) => (
+          <BookmarkCard key={bookmark.id} bookmark={bookmark} />
+        ))}
+      </div>
 
       {bookmarks.length > PAGE_SIZE && (
         <Pagination

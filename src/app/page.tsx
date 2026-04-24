@@ -16,8 +16,8 @@ export default async function Home() {
 
   return (
     <>
-      <main className="w-full max-w-[640px] mx-auto px-5 py-16 sm:py-24">
-        <header className="mb-12">
+      <main className="w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 py-12 sm:py-16">
+        <header className="mb-10 sm:mb-14">
           <h1 className="flex items-center gap-2 sm:gap-2.5 text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
             <Image
               src={siteHeaderIcon}

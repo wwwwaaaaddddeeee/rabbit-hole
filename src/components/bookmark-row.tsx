@@ -1,38 +1,37 @@
 "use client";
 
-import { Card } from "@heroui/react";
 import type { Bookmark } from "@/lib/types";
 import { formatDate } from "@/lib/time";
 
 export function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
   return (
-    <Card
-      as="article"
-      variant="transparent"
-      className="border-b border-zinc-100 dark:border-zinc-800/60 last:border-b-0"
-    >
+    <article className="group">
       <a
         href={bookmark.link}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-start gap-3 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-zinc-400 dark:focus-visible:ring-offset-zinc-950 rounded-md"
+        className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500 focus-visible:ring-offset-4 focus-visible:ring-offset-white dark:focus-visible:ring-zinc-400 dark:focus-visible:ring-offset-zinc-950 rounded-xl"
       >
-        <div className="shrink-0 w-12 h-12 rounded-md overflow-hidden bg-zinc-100 dark:bg-zinc-800">
-          {bookmark.cover && (
+        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-900 ring-1 ring-zinc-200/70 dark:ring-zinc-800/70 transition-all duration-200 group-hover:ring-zinc-300 dark:group-hover:ring-zinc-700">
+          {bookmark.cover ? (
             <img
               src={bookmark.cover}
               alt=""
-              className="w-full h-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
               loading="lazy"
             />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center text-zinc-300 dark:text-zinc-700 text-sm font-medium tracking-wide">
+              {bookmark.domain}
+            </div>
           )}
         </div>
 
-        <Card.Content className="min-w-0 flex-1 py-0.5">
-          <Card.Title className="text-[15px] font-semibold leading-snug text-zinc-900 dark:text-zinc-100 line-clamp-2">
+        <div className="mt-3 px-0.5">
+          <h2 className="text-[14px] font-medium leading-snug text-zinc-900 dark:text-zinc-100 line-clamp-2">
             {bookmark.title}
-          </Card.Title>
-          <p className="mt-1 text-[13px] text-zinc-500 dark:text-zinc-400">
+          </h2>
+          <p className="mt-1 text-[12px] text-zinc-500 dark:text-zinc-400">
             <span>{bookmark.domain}</span>
             <span
               className="mx-1.5 text-zinc-400 dark:text-zinc-600"
@@ -42,8 +41,8 @@ export function BookmarkCard({ bookmark }: { bookmark: Bookmark }) {
             </span>
             <span>{formatDate(bookmark.created)}</span>
           </p>
-        </Card.Content>
+        </div>
       </a>
-    </Card>
+    </article>
   );
 }
