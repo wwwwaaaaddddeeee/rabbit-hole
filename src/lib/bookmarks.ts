@@ -1,5 +1,4 @@
 import { fetchAllBookmarks } from "./raindrop";
-import { enrichWithTags } from "./tags";
 import { MOCK_BOOKMARKS } from "./mock-data";
 import type { Bookmark } from "./types";
 
@@ -25,7 +24,7 @@ export async function getBookmarks(): Promise<Bookmark[]> {
   }
 
   const raw = await fetchAllBookmarks();
-  const enriched = await enrichWithTags(raw);
+  const enriched: Bookmark[] = raw.map((b) => ({ ...b, aiTags: [] }));
 
   cachedBookmarks = enriched;
   cacheTimestamp = now;

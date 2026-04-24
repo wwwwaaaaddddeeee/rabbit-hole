@@ -4,7 +4,7 @@ import { Feed } from "@/components/feed";
 import { ProjectAttribution } from "@/components/project-attribution";
 import siteHeaderIcon from "./site-header-icon.png";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function Home() {
   let bookmarks: Awaited<ReturnType<typeof getBookmarks>> = [];
