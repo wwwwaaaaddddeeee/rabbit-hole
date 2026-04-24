@@ -65,7 +65,7 @@ a[href] {
 @media (prefers-color-scheme: dark) {
   :root {
     --coming-bg: #0F0F0F;
-    --coming-fg: #BFBFBF;
+    --coming-fg: #EAEAEA;
   }
 }
 
