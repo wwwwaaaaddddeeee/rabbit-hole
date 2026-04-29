@@ -1,35 +1,33 @@
-import { RabitHoleCard } from "@/components/RabitHoleCard";
-
 export const metadata = {
   title: "rabit.wtf — coming soon",
 };
 
+const ORANGE = "#FF5D00";
+
 export default function ComingSoon() {
   return (
-    <div
-      className="fixed inset-0 flex flex-col items-center justify-center gap-4"
-      style={{ backgroundColor: "var(--coming-bg)", color: "var(--coming-fg)" }}
+    <main
+      className="fixed inset-0 flex items-center justify-center"
+      style={{ backgroundColor: ORANGE }}
     >
-      <div style={{ width: "min(180px, 30vmin)" }}>
-        <RabitHoleCard />
+      <div className="flex items-center gap-[6vmin] px-[6vmin]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/rabit-figma.svg"
+          alt="rabit"
+          className="block"
+          style={{ width: "min(110px, 13vmin)", height: "auto" }}
+        />
+        <a href="https://rabit.wtf" aria-label="rabit.wtf" className="block">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/rwtf-pill.svg"
+            alt="rabit.wtf"
+            className="block"
+            style={{ width: "min(270px, 32vmin)", height: "auto" }}
+          />
+        </a>
       </div>
-      <p className="inline-flex items-center gap-0.5 font-sans font-medium text-base tracking-tight text-[#FF5D00] underline underline-offset-2">
-        rabit.wtf
-        <svg
-          width="10"
-          height="10"
-          viewBox="0 0 10 10"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M3 7L7 3" />
-          <path d="M3.5 3H7v3.5" />
-        </svg>
-      </p>
-    </div>
+    </main>
   );
 }
