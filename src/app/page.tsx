@@ -1,3 +1,4 @@
+import { RabitMark } from "@/components/RabitMark";
 import { RwtfPill } from "@/components/RwtfPill";
 
 export const metadata = {
@@ -11,12 +12,9 @@ export default function ComingSoon() {
       style={{ backgroundColor: "var(--coming-bg)" }}
     >
       <div className="flex items-center gap-[6vmin] px-[6vmin]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/rabit-figma.svg"
-          alt="rabit"
-          className="block"
-          style={{ width: "min(110px, 13vmin)", height: "auto" }}
+        <RabitMark
+          className="block h-auto"
+          style={{ width: "min(110px, 13vmin)" }}
         />
         <a
           href="https://rabit.wtf"

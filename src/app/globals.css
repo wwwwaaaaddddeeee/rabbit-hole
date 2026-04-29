@@ -60,14 +60,18 @@ a[href] {
 :root {
   --coming-bg: #f0f0f0;
   --coming-fg: #404040;
-  --pill: #FE6021;
+  --pill: #FFC01A;
+  --rabit-outline: #000000;
+  --rabit-body: #f4f4f4;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --coming-bg: #171717;
     --coming-fg: #EAEAEA;
-    --pill: #FFC01A;
+    --pill: #FFC2FF;
+    --rabit-outline: #A29F98;
+    --rabit-body: #E9E6E1;
   }
 }
 
