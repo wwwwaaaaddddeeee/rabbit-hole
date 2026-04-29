@@ -58,14 +58,16 @@ a[href] {
 }
 
 :root {
-  --coming-bg: #F5F5F5;
+  --coming-bg: #f0f0f0;
   --coming-fg: #404040;
+  --pill: #FE6021;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --coming-bg: #434343;
+    --coming-bg: #171717;
     --coming-fg: #EAEAEA;
+    --pill: #FFC01A;
   }
 }
 
