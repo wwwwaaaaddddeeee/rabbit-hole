@@ -6,27 +6,9 @@ export interface Bookmark {
   cover: string;
   created: string;
   domain: string;
-  raindropTags: string[];
-  aiTags: string[];
-}
-
-export interface RaindropItem {
-  _id: number;
-  title: string;
-  link: string;
-  excerpt: string;
-  cover: string;
-  created: string;
-  domain: string;
+  /** Display tags (from the database) */
   tags: string[];
-  note: string;
-  type: string;
-  media: { link: string }[];
-}
-
-export interface RaindropResponse {
-  result: boolean;
-  items: RaindropItem[];
-  count: number;
-  collectionId: number;
+  featured: boolean;
+  /** Lower sorts first in spotlight (optional, database-backed) */
+  spotlightOrder?: number | null;
 }

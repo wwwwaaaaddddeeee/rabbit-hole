@@ -8,19 +8,25 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "rabit.wtf",
-  description: "Things found on the internet.",
+  title: {
+    default: "rabit.wtf — things found on the internet",
+    template: "%s | rabit.wtf",
+  },
+  description:
+    "A curated bookmark gallery with spotlight picks, tag filters, and a calm reading layout.",
   metadataBase: new URL("https://rabit.wtf"),
   openGraph: {
     title: "rabit.wtf",
-    description: "Things found on the internet.",
+    description:
+      "A curated bookmark gallery with spotlight picks and image-forward cards.",
     url: "https://rabit.wtf",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "rabit.wtf",
-    description: "Things found on the internet.",
+    description:
+      "A curated bookmark gallery with spotlight picks and image-forward cards.",
   },
 };
 

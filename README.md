@@ -1,69 +1,67 @@
 # rabit.wtf
 
-> things found on the internet
+Public bookmark gallery with a **spotlight** (up to three featured links), an **archive** with tag filters and pagination, and a **password-protected admin** to manage bookmarks in **PostgreSQL**. Open Graph metadata powers thumbnails and text refresh.
 
-A minimal, public-facing bookmarks feed powered by [Raindrop.io](https://raindrop.io) and AI. Save a link to your Raindrop collection and it shows up on rabit.wtf within seconds — automatically tagged, searchable, and browsable by anyone.
+- **Stack:** [Next.js 16](https://nextjs.org) (App Router), [Tailwind CSS 4](https://tailwindcss.com), [Drizzle ORM](https://orm.drizzle.team), [NextAuth](https://authjs.dev) (credentials), [open-graph-scraper](https://www.npmjs.com/package/open-graph-scraper), [Zod](https://zod.dev)
+- **Design:** system light/dark, Geist Sans, image-forward cards
 
----
+## Quick start
 
-## Overview
-
-rabit.wtf is a single-page web app that pulls bookmarks from a dedicated Raindrop.io collection and displays them as a clean, scrollable feed. Each bookmark is automatically enriched with AI-generated tags using Mistral Small 3.1. Visitors can filter by tag, browse the feed, or chat with an AI agent ("The Rabbit Hole") that can search the collection and answer questions.
-
-### Key Features
-
-- **Live bookmark feed** — New bookmarks appear within ~15 seconds of being saved to Raindrop
-- **AI-generated tags** — Mistral Small 3.1 analyzes each bookmark and generates relevant tags, cached per bookmark
-- **Tag filtering** — Click any tag to filter the feed; only tags with 2+ bookmarks appear in the top filter bar
-- **AI chat agent** — "The Rabbit Hole" lives in a floating drawer, has a bold personality, and can search the bookmark collection
-- **Weather pill** — Header displays the visitor's city, local time, and live weather (via Open-Meteo)
-- **System light/dark mode** — Respects `prefers-color-scheme`
-- **Responsive** — Single-column layout optimized for all screen sizes
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| **Framework** | Next.js 16 (App Router) |
-| **Language** | TypeScript |
-| **Styling** | Tailwind CSS 4 |
-| **Animation** | Framer Motion |
-| **AI SDK** | Vercel AI SDK v6 (`ai`, `@ai-sdk/react`) |
-| **LLM Provider** | Mistral Small 3.1 (`@ai-sdk/mistral`) |
-| **Data Source** | Raindrop.io REST API |
-| **Weather** | Open-Meteo API (free, no key) |
-| **Geolocation** | Browser Geolocation API + ipapi.co fallback |
-| **Hosting** | Vercel |
-| **Domain** | Namecheap (DNS via Vercel) |
-| **Font** | Geist Sans (via `next/font`) |
-
----
-
-## Architecture
-
-```
-Browser → Next.js (Vercel)
-              │
-              ├── Server Component (page.tsx)
-              │     └── getBookmarks()
-              │           ├── Raindrop.io API → fetch collection
-              │           └── Mistral Small 3.1 → generate tags (cached)
-              │
-              ├── API Route: /api/chat
-              │     ├── streamText (Mistral Small 3.1)
-              │     └── searchShowcase tool → keyword search bookmarks
-              │
-              └── API Route: /api/weather
-                    └── Open-Meteo API → daily forecast
+```bash
+npm install
+cp .env.example .env.local
+# Set DATABASE_URL, AUTH_SECRET, and ADMIN_PASSWORD_HASH (or ADMIN_PASSWORD in dev only)
+npx drizzle-kit push
+npm run db:seed
+npm run dev
 ```
 
-### Data Flow
+- **Home:** [http://localhost:3000](http://localhost:3000) — demo data is used if `DATABASE_URL` is missing (for local build without a DB)
+- **Admin:** [http://localhost:3000/admin/login](http://localhost:3000/admin/login) — use the password matching your env
+- **About / colophon:** `/about`, `/colophon`
 
-1. User visits rabit.wtf
-2. Server component fetches all bookmarks from Raindrop collection
-3. Each bookmark is enriched with AI tags (Mistral) — results cached in-memory by content hash
-4. Feed renders server-side, hydrates client-side with Framer Motion animations
-5. Tag filter bar shows tags appearing on 2+ bookmarks
-6. Chat drawer connects to `/api/chat` for streaming AI responses
+## Environment
+
+| Variable | Purpose |
+|----------|---------|
+| `DATABASE_URL` | PostgreSQL (e.g. [Neon](https://neon.tech)) |
+| `AUTH_SECRET` | NextAuth session encryption |
+| `ADMIN_PASSWORD_HASH` | bcrypt hash of the operator password (recommended for production) |
+| `ADMIN_PASSWORD` | **Development only** — plain password if no hash is set (disabled in production) |
+
+Generate a hash:
+
+```bash
+npx --yes node -e "require('bcryptjs').hash('your-password',10).then(console.log)"
+```
+
+## Scripts
+
+| Script | |
+|--------|---|
+| `npm run dev` | Next.js dev server |
+| `npm run build` | Production build |
+| `npm run db:push` | Push Drizzle schema to the database |
+| `npm run db:generate` | Generate SQL migration files from `src/db/schema.ts` |
+| `npm run db:seed` | Reset and seed demo bookmarks (requires `DATABASE_URL`) |
+| `npm run db:studio` | Drizzle Studio against `DATABASE_URL` |
+
+## Data model
+
+- **bookmarks** — url, title, excerpt, domain, cover, `featured`, `spotlightOrder`, timestamps  
+- **tags** + **bookmark_tags** — many-to-many
+
+Spotlight takes up to **three** `featured` rows, ordered by `spotlightOrder` then recency. Everything else (including overflow featured) appears in the archive list.
+
+## Docs
+
+- [docs/audit.md](docs/audit.md) — repo / deploy direction (milestone 0)
+- [`.env.example`](.env.example) — all env vars
+
+## Linear
+
+Project: [rabit.wtf on Linear](https://linear.app/wwwwaaaaddddeeee/project/rabitwtf-c8fc383bb860/overview)
+
+## License
+
+Private / personal project.

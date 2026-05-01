@@ -1,22 +1,19 @@
 import Image from "next/image";
-import { getBookmarks } from "@/lib/bookmarks";
-import { Feed } from "@/components/feed";
+import { getHomeBookmarks } from "@/lib/bookmarks";
+import { HomeFeed } from "@/components/home-feed";
 import { ProjectAttribution } from "@/components/project-attribution";
+import { Spotlight } from "@/components/spotlight";
+import { SiteFooter } from "@/components/site-footer";
 import siteHeaderIcon from "./site-header-icon.png";
 
 export const revalidate = 60;
 
 export default async function Home() {
-  let bookmarks: Awaited<ReturnType<typeof getBookmarks>> = [];
-  try {
-    bookmarks = await getBookmarks();
-  } catch {
-    bookmarks = [];
-  }
+  const { spotlight, archive, source } = await getHomeBookmarks();
 
   return (
-    <>
-      <main className="w-full max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 py-12 sm:py-16">
+    <div className="min-h-full flex flex-col">
+      <main className="w-full max-w-[1440px] mx-auto flex-1 px-5 sm:px-8 lg:px-12 py-12 sm:py-16">
         <header className="mb-10 sm:mb-14">
           <h1 className="flex items-center gap-2 sm:gap-2.5 text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
             <Image
@@ -24,7 +21,7 @@ export default async function Home() {
               alt=""
               width={28}
               height={28}
-              className="size-6 sm:size-7 shrink-0 rounded-lg"
+              className="size-6 sm:size-7 shrink-0 rounded-lg ring-2 ring-[#a2ff86]/25 dark:ring-[#a2ff86]/20"
               priority
             />
             rabit.wtf
@@ -32,8 +29,10 @@ export default async function Home() {
           <ProjectAttribution />
         </header>
 
-        <Feed bookmarks={bookmarks} />
+        <Spotlight items={spotlight} />
+        <HomeFeed spotlight={spotlight} archive={archive} source={source} />
+        <SiteFooter />
       </main>
-    </>
+    </div>
   );
 }
