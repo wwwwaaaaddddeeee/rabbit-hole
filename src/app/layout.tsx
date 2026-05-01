@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 
@@ -6,6 +6,12 @@ const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#F0F0F0",
+};
 
 export const metadata: Metadata = {
   title: "rabit.wtf",
@@ -33,8 +39,9 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} h-full antialiased scheme-light dark:scheme-dark`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 font-sans">
+      <body className="min-h-full font-sans text-zinc-900" style={{ backgroundColor: "#F0F0F0" }}>
         {children}
       </body>
     </html>
