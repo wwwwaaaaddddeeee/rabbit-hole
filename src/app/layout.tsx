@@ -10,7 +10,10 @@ const geistSans = Geist({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#F0F0F0",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F0F0F0" },
+    { media: "(prefers-color-scheme: dark)", color: "#FF7C2A" },
+  ],
 };
 
 export const metadata: Metadata = {
@@ -41,7 +44,7 @@ export default function RootLayout({
       className={`${geistSans.variable} h-full antialiased scheme-light dark:scheme-dark`}
       suppressHydrationWarning
     >
-      <body className="min-h-full font-sans text-zinc-900" style={{ backgroundColor: "#F0F0F0" }}>
+      <body className="page-bg min-h-full font-sans text-zinc-900">
         {children}
       </body>
     </html>

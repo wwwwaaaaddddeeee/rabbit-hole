@@ -75,6 +75,16 @@ a[href] {
   }
 }
 
+.page-bg {
+  background-color: #F0F0F0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .page-bg {
+    background-color: #FF7C2A;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
